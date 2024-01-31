@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import java.util.Map;
 
 //@Entity tells Spring that this class is an entity and should be mapped to a database.
@@ -16,6 +19,7 @@ public class Library {
     //Next fields are the columns of the table
     private int number_of_books;
     private String library_name;
+    @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, Integer> bookGenres;
 
     public Library() {}
