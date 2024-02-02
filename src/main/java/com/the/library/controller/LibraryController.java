@@ -1,13 +1,12 @@
 package com.the.library.controller;
 
+import java.util.List;
 import com.the.library.model.Library;
-import com.the.library.repository.LibraryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import com.the.library.repository.LibraryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
 @RequestMapping("/libraries")
@@ -32,6 +31,7 @@ public class LibraryController {
     @PostMapping("")
     public ResponseEntity<Library> createLibrary(@RequestBody Library library) {
         Library savedLibrary = libraryRepository.save(library);
+        System.out.println("1.0 ============== library: " + library.getLibrary_name());
         return new ResponseEntity<>(savedLibrary, HttpStatus.CREATED);
     }
 
