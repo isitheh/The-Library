@@ -33,9 +33,9 @@ public class LibraryControllerTests {
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(req));
         Map<String, Integer> mBookGenres = new HashMap<>();
         mBookGenres.put("Dashboard", 12);
-        mBookGenres.put("Reporter", 19);
-        mBookGenres.put("Research", 14);
-        Library library = new Library(7, 45, "Connection", mBookGenres);
+        mBookGenres.put("Reporter", 20);
+        mBookGenres.put("Research", 15);
+        Library library = new Library(7, 47, "Connection", mBookGenres);
         ResponseEntity<Library> responseEntity = libraryController.createLibrary(library);
 
         assertEquals(201, responseEntity.getStatusCode().value());
