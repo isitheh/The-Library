@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
 @RequestMapping("/libraries")
+@CrossOrigin
 public class LibraryController {
     @Autowired
     private LibraryRepository libraryRepository;
