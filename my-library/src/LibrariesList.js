@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import LibraryDeleted from './LibraryDeleted';
+import LibraryDeletedAll from './LibraryDeletedAll';
 
 const LibrariesList = () => {
     const [show, setShow] = useState(false);
+    const [showAll, setShowAll] = useState(false);
     const [libraries, setLibraries] = useState([]);
     const [refreshScreen, setRefreshScreen] = useState(false);
 
@@ -24,11 +26,20 @@ const LibrariesList = () => {
         setShow(true);
     }
 
+    const handleCloseAll = () => {
+        setShowAll(false);
+        deleteAllLibrary();
+    }
+    const handleShowAll = () => {
+        setShowAll(true);
+    }
+
     const updateLibrary = (libId) => {
-        console.log("X.0 ===================== Update Library:", libId);
+        console.log("4.0 ========================== updateLibrary: ", libId);
     }
 
     const deleteLibrary = (libId) => {
+        
         fetch('http://localhost:8080/libraries/' + libId, {
             method: "DELETE",
         })
@@ -39,7 +50,15 @@ const LibrariesList = () => {
                 return (values.filter(item => item.libId !== libId))
             }
         )})
-        .catch(error => console.error('Error deleting a library entry: ', error));
+        .catch(error => console.error('Error deleting a library entry: ', error)); 
+    }
+
+    const deleteAllLibrary = () => {
+        fetch('http://localhost:8080/libraries', {
+            method: "DELETE",
+        })
+        .then(() => setRefreshScreen(!refreshScreen))
+        .catch(error => console.error('Error deleting all libraries: ', error));
     }
 
     return (
@@ -61,7 +80,7 @@ const LibrariesList = () => {
                         <td><Button variant="secondary">View {library.library_name} Genres</Button></td>
                         <td>
                             <Button variant="danger" onClick={handleShow}>Delete {library.library_name}</Button>
-                            <LibraryDeleted show={show} onClose={() => handleClose(library.id)} lib={library.library_name}/>
+                            <LibraryDeleted show={show} onClose={() => handleClose(library.id)} lib={library.library_name}/> 
                             <Button variant="info" onClick={() => updateLibrary(library.id)}>Update {library.library_name} </Button>
                         </td>
                     </tr>
@@ -69,7 +88,9 @@ const LibrariesList = () => {
                 </tbody>
             </Table>
             <br/>
-            <Button  variant="primary">New Library</Button>
+            <Button variant="primary">New Library</Button>{' '}
+            <Button variant="danger" onClick={handleShowAll}>Delete All</Button>
+            <LibraryDeletedAll show={showAll} onClose={handleCloseAll}/>        
         </div>
     )
 }
