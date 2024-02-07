@@ -32,7 +32,6 @@ public class LibraryController {
     @PostMapping("")
     public ResponseEntity<Library> createLibrary(@RequestBody Library library) {
         Library savedLibrary = libraryRepository.save(library);
-        System.out.println("1.0 ============== library: " + library.getLibrary_name());
         return new ResponseEntity<>(savedLibrary, HttpStatus.CREATED);
     }
 
