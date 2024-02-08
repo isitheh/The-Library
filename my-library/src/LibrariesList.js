@@ -3,12 +3,32 @@ import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import LibraryDeleted from './LibraryDeleted';
 import LibraryDeletedAll from './LibraryDeletedAll';
+import AddLibrary from './AddLibrary';
+import UpdateLibrary from './UpdateLibrary';
 
 const LibrariesList = () => {
     const [show, setShow] = useState(false);
+    const [showAdd, setShowAdd] = useState(false);
     const [showAll, setShowAll] = useState(false);
     const [libraries, setLibraries] = useState([]);
+    const [showUpdate, setShowUpdate] = useState(false);
     const [refreshScreen, setRefreshScreen] = useState(false);
+
+    const handleCloseAdd = () => {
+        setShowAdd(false);
+        addLibrary();
+    }
+    const handleShowAdd = () => {
+        setShowAdd(true);
+    }
+
+    const handleCloseUpdate = (libId) => {
+        setShowUpdate(false);
+        updateLibrary(libId);
+    }
+    const handleShowUpdate = () => {
+        setShowUpdate(true);
+    }
 
     //Do when LibrariesList component mounts
     useEffect(() => {
@@ -38,8 +58,19 @@ const LibrariesList = () => {
         console.log("4.0 ========================== updateLibrary: ", libId);
     }
 
+    const addLibrary = () => {
+        console.log("5.0 =========== add Library ==============");
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                title: 'React Hooks POST Request Example' 
+            })
+        };
+    }
+
     const deleteLibrary = (libId) => {
-        
         fetch('http://localhost:8080/libraries/' + libId, {
             method: "DELETE",
         })
@@ -81,16 +112,18 @@ const LibrariesList = () => {
                         <td>
                             <Button variant="danger" onClick={handleShow}>Delete {library.library_name}</Button>
                             <LibraryDeleted show={show} onClose={() => handleClose(library.id)} lib={library.library_name}/> 
-                            <Button variant="info" onClick={() => updateLibrary(library.id)}>Update {library.library_name} </Button>
+                            <Button variant="info" onClick={handleShowUpdate}>Update {library.library_name}</Button>
+                            <UpdateLibrary show={showUpdate} onClose={() => handleCloseUpdate(library.id)} lib={library.library_name}/>
                         </td>
                     </tr>
                 ))}
                 </tbody>
             </Table>
             <br/>
-            <Button variant="primary">New Library</Button>{' '}
+            <Button variant="primary" onClick={handleShowAdd}>New Library</Button>{' '}
             <Button variant="danger" onClick={handleShowAll}>Delete All</Button>
-            <LibraryDeletedAll show={showAll} onClose={handleCloseAll}/>        
+            <LibraryDeletedAll show={showAll} onClose={handleCloseAll}/>  
+            <AddLibrary show={showAdd} onClose={handleCloseAdd}/>  
         </div>
     )
 }

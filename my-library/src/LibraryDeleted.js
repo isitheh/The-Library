@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
     
 const LibraryDeleted = (props) => {
-    const { show, onClose, lib} = props;
+    const { show, onClose, lib } = props;
 
     return (
         <>
