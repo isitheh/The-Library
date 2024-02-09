@@ -14,6 +14,7 @@ const AddLibrary = (props) => {
     const [religiousGenreName, setReligiousGenreName] = useState('');
     const [dramaGenreName, setDramaGenreName] = useState('');
     const [crimeGenreName, setCrimeGenreName] = useState('');
+
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Form submitted with libraryName: ', {libraryName});

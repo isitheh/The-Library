@@ -64,10 +64,23 @@ const LibrariesList = () => {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                title: 'React Hooks POST Request Example' 
+            body: JSON.stringify({
+                'library_name': 'Moniq',
+                'number_of_books': 17,
+                'bookGenres': {
+                    'Comedy': 9,
+                    'Religious': 2,
+                    'Drama': 3,
+                    'Crime': 3
+                } 
             })
         };
+
+        fetch('http://localhost:8080/libraries', requestOptions)
+        .then(response => {
+            setRefreshScreen(!refreshScreen);
+            response.json();
+        });
     }
 
     const deleteLibrary = (libId) => {
