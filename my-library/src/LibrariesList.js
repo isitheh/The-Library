@@ -5,15 +5,18 @@ import LibraryDeleted from './LibraryDeleted';
 import LibraryDeletedAll from './LibraryDeletedAll';
 import AddLibrary from './AddLibrary';
 import UpdateLibrary from './UpdateLibrary';
+import ViewLibraryGenre from './ViewLibraryGenre';
 
 const LibrariesList = () => {
     const [show, setShow] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
     const [showAll, setShowAll] = useState(false);
     const [libraries, setLibraries] = useState([]);
+    const [showGenre, setShowGenre] = useState(false);
+    const [delLibrary, setDelLibrary] = useState(null);
     const [showUpdate, setShowUpdate] = useState(false);
     const [refreshScreen, setRefreshScreen] = useState(false);
-    const [delLibrary, setDelLibrary] = useState(null);
+    const [viewLibraryGenre, setViewLibraryGenre] = useState(null);
 
     const handleCloseAdd = () => {
         setShowAdd(false);
@@ -45,6 +48,7 @@ const LibrariesList = () => {
             } 
         };
         setDelLibrary(JSON_VAR);
+        setViewLibraryGenre(JSON_VAR);
     }, []);
 
     //Do when LibrariesList component mounts
@@ -54,6 +58,15 @@ const LibrariesList = () => {
         .then(data => setLibraries(data))
         .catch(error => console.error('Error gatting libraries: ', error));
     }, [refreshScreen]);
+
+    const handleCloseGenre = (libId) => {
+        setShowGenre(false);
+    }
+
+    const handleShowGenre = (library) => {
+        setViewLibraryGenre(library);
+        setShowGenre(true);
+    }
 
     const handleClose = (libId) => {
         setShow(false);
@@ -120,7 +133,10 @@ const LibrariesList = () => {
                     <tr key={library.id}>
                         <td>{library.library_name}</td>
                         <td>{library.number_of_books}</td>
-                        <td><Button variant="secondary">View {library.library_name} Genres</Button></td>
+                        <td>
+                            <Button variant="secondary" onClick={() => handleShowGenre(library)}>View {library.library_name} Genres</Button>
+                            <ViewLibraryGenre show={showGenre} onClose={() => handleCloseGenre(viewLibraryGenre.id)} lib={viewLibraryGenre}/> 
+                        </td>
                         <td>
                             <Button variant="danger" onClick={() => handleShow(library)}>Delete {library.library_name}</Button>
                             <LibraryDeleted show={show} onClose={() => handleClose(delLibrary.id)} lib={delLibrary}/> 
