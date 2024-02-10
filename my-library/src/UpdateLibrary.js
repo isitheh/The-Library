@@ -9,7 +9,7 @@ import Row from 'react-bootstrap/Row';
 const UpdateLibrary = (props) => {
     const { show, onClose, lib } = props;
     const [libraryName, setLibraryName] = useState(lib.library_name);
-    const [libraryNumBooks, setLibraryNumBooks] = useState(lib.library_num_books);
+    const [libraryNumBooks, setLibraryNumBooks] = useState(lib.number_of_books);
     const [comedyGenreNum, setComedyGenreNum] = useState(lib.bookGenres.Comedy);
     const [religiousGenreNum, setReligiousGenreNum] = useState(lib.bookGenres.Religious);
     const [dramaGenreNum, setDramaGenreNum] = useState(lib.bookGenres.Drama);
@@ -17,6 +17,24 @@ const UpdateLibrary = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        let numBooks = Number(comedyGenreNum) + Number(religiousGenreNum) + Number(dramaGenreNum) + Number(crimeGenreNum);
+        setLibraryNumBooks(numBooks);
+        const requestOptions = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                'library_name': libraryName,
+                'number_of_books': libraryNumBooks,
+                'bookGenres': {
+                    'Comedy': Number(comedyGenreNum),
+                    'Religious': Number(religiousGenreNum),
+                    'Drama': Number(dramaGenreNum),
+                    'Crime': Number(crimeGenreNum)
+                } 
+            })
+        };
+        fetch('http://localhost:8080/libraries/' + lib.id, requestOptions)
+        .then(response => response.json())
     }
 
     //Do when Book Genres is modified

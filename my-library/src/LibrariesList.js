@@ -13,11 +13,13 @@ const LibrariesList = () => {
     const [libraries, setLibraries] = useState([]);
     const [showUpdate, setShowUpdate] = useState(false);
     const [refreshScreen, setRefreshScreen] = useState(false);
+    const [delLibrary, setDelLibrary] = useState(null);
 
     const handleCloseAdd = () => {
         setShowAdd(false);
         addLibrary();
     }
+
     const handleShowAdd = () => {
         setShowAdd(true);
     }
@@ -29,6 +31,21 @@ const LibrariesList = () => {
     const handleShowUpdate = () => {
         setShowUpdate(true);
     }
+
+    useEffect(() => {
+        //A dummy JSON Library
+        const JSON_VAR = {
+            'library_name': "Test",
+            'number_of_books': 4,
+            'bookGenres': {
+                'Comedy': 1,
+                'Religious': 1,
+                'Drama': 1,
+                'Crime': 1
+            } 
+        };
+        setDelLibrary(JSON_VAR);
+    }, []);
 
     //Do when LibrariesList component mounts
     useEffect(() => {
@@ -42,7 +59,9 @@ const LibrariesList = () => {
         setShow(false);
         deleteLibrary(libId);
     }
-    const handleShow = () => {
+
+    const handleShow = (library) => {
+        setDelLibrary(library);
         setShow(true);
     }
 
@@ -50,54 +69,17 @@ const LibrariesList = () => {
         setShowAll(false);
         deleteAllLibrary();
     }
+
     const handleShowAll = () => {
         setShowAll(true);
     }
 
     const updateLibrary = (lib) => {
-        const requestOptions = {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                'library_name': lib.library_name,
-                'number_of_books': 13,
-                'bookGenres': {
-                    'Comedy': 5,
-                    'Religious': 2,
-                    'Drama': 3,
-                    'Crime': 3
-                } 
-            })
-        };
-
-        fetch('http://localhost:8080/libraries/' + lib.id, requestOptions)
-        .then(response => {
-            setRefreshScreen(!refreshScreen);
-            response.json();
-        });
+        setRefreshScreen(!refreshScreen);
     }
 
     const addLibrary = () => {
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                'library_name': 'Moniq',
-                'number_of_books': 17,
-                'bookGenres': {
-                    'Comedy': 9,
-                    'Religious': 2,
-                    'Drama': 3,
-                    'Crime': 3
-                } 
-            })
-        };
-
-        fetch('http://localhost:8080/libraries', requestOptions)
-        .then(response => {
-            setRefreshScreen(!refreshScreen);
-            response.json();
-        });
+        setRefreshScreen(!refreshScreen);
     }
 
     const deleteLibrary = (libId) => {
@@ -140,8 +122,8 @@ const LibrariesList = () => {
                         <td>{library.number_of_books}</td>
                         <td><Button variant="secondary">View {library.library_name} Genres</Button></td>
                         <td>
-                            <Button variant="danger" onClick={handleShow}>Delete {library.library_name}</Button>
-                            <LibraryDeleted show={show} onClose={() => handleClose(library.id)} lib={library.library_name}/> 
+                            <Button variant="danger" onClick={() => handleShow(library)}>Delete {library.library_name}</Button>
+                            <LibraryDeleted show={show} onClose={() => handleClose(delLibrary.id)} lib={delLibrary}/> 
                             <Button variant="info" onClick={handleShowUpdate}>Update {library.library_name}</Button>
                             <UpdateLibrary show={showUpdate} onClose={() => handleCloseUpdate(library)} lib={library}/>
                         </td>
@@ -154,6 +136,7 @@ const LibrariesList = () => {
             <Button variant="danger" onClick={handleShowAll}>Delete All</Button>
             <LibraryDeletedAll show={showAll} onClose={handleCloseAll}/>  
             <AddLibrary show={showAdd} onClose={handleCloseAdd}/>  
+            
         </div>
     )
 }

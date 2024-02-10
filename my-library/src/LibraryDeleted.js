@@ -8,9 +8,9 @@ const LibraryDeleted = (props) => {
         <>
             <Modal show={show} onHide={onClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Delete {lib}</Modal.Title>
+                <Modal.Title>Delete {lib.library_name}</Modal.Title>
             </Modal.Header>
-            <Modal.Body>{lib} Library Deleted Successfully!</Modal.Body>
+            <Modal.Body>{lib.library_name} Library Deleted Successfully!</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={onClose}>Close</Button>
             </Modal.Footer>
