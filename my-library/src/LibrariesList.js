@@ -22,9 +22,9 @@ const LibrariesList = () => {
         setShowAdd(true);
     }
 
-    const handleCloseUpdate = (libId) => {
+    const handleCloseUpdate = (lib) => {
         setShowUpdate(false);
-        updateLibrary(libId);
+        updateLibrary(lib);
     }
     const handleShowUpdate = () => {
         setShowUpdate(true);
@@ -54,13 +54,30 @@ const LibrariesList = () => {
         setShowAll(true);
     }
 
-    const updateLibrary = (libId) => {
-        console.log("4.0 ========================== updateLibrary: ", libId);
+    const updateLibrary = (lib) => {
+        const requestOptions = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                'library_name': lib.library_name,
+                'number_of_books': 13,
+                'bookGenres': {
+                    'Comedy': 5,
+                    'Religious': 2,
+                    'Drama': 3,
+                    'Crime': 3
+                } 
+            })
+        };
+
+        fetch('http://localhost:8080/libraries/' + lib.id, requestOptions)
+        .then(response => {
+            setRefreshScreen(!refreshScreen);
+            response.json();
+        });
     }
 
     const addLibrary = () => {
-        console.log("5.0 =========== add Library ==============");
-
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -126,7 +143,7 @@ const LibrariesList = () => {
                             <Button variant="danger" onClick={handleShow}>Delete {library.library_name}</Button>
                             <LibraryDeleted show={show} onClose={() => handleClose(library.id)} lib={library.library_name}/> 
                             <Button variant="info" onClick={handleShowUpdate}>Update {library.library_name}</Button>
-                            <UpdateLibrary show={showUpdate} onClose={() => handleCloseUpdate(library.id)} lib={library.library_name}/>
+                            <UpdateLibrary show={showUpdate} onClose={() => handleCloseUpdate(library)} lib={library}/>
                         </td>
                     </tr>
                 ))}

@@ -17,13 +17,8 @@ const AddLibrary = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Form submitted with libraryName: ', {libraryName});
-        console.log('Form submitted with libraryNumBooks: ', {libraryNumBooks});
-        console.log('Form submitted with comedyGenreName: ', {comedyGenreName});
-        console.log('Form submitted with religiousGenreName: ', {religiousGenreName});
-        console.log('Form submitted with dramaGenreName: ', {dramaGenreName});
-        console.log('Form submitted with crimeGenreName: ', {crimeGenreName});
     }
+
     return (
         <>
             <Offcanvas show={show} onHide={onClose}>
